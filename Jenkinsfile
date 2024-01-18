@@ -13,9 +13,17 @@ pipeline {
         sh 'mvn clean install'
       }
     }
-    stage('Run Locally') {
+    stage('show contents of target') {
+    steps {
+        // print the contents of the target directory
+        sh 'ls -l target'
+    }
+  }
+    stage('run JAR locally') {
       steps {
-        sh 'java -jar target/home/slave1/workspace/weather_update_Develop/target/weather-forecast-app-1.0-SNAPSHOT.jar &'
+        // Run the JAR file using java -jar
+        sh 'nohup timeout 10s java -jar /home/slave1/workspace/weather_update_Develop/target/weather-forecast-app-1.0-SNAPSHOT.jar > output.log 2>&1 &'
+        // Sleep for a while to allow the application to start
         sleep 30
       }
     }
